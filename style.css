@@ -1,0 +1,12 @@
+#scene{
+    min-height: 70vh;
+    position: relative;
+}
+
+#key{
+    position: relative;
+}
+
+#button{
+    position: relative;
+}

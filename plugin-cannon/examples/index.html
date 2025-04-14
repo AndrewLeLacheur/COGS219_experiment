@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>jsPsychPluginCannon Example</title>
+  <script src="https://unpkg.com/jspsych"></script>
+  <!-- Load the published plugin package here, e.g.
+<script src="https://unpkg.com/plugin-cannon"></script>
+<script src="../dist/index.global.js"></script> -->
+  <link rel="stylesheet" href="https://unpkg.com/jspsych/css/jspsych.css">
+</head>
+
+<body></body>
+<script>
+  const jsPsych = initJsPsych();
+
+  const trial = {
+    type: jsPsychPluginCannon
+  };
+
+  jsPsych.run([trial])
+</script>
+
+</html>

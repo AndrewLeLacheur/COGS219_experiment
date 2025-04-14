@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <script src="https://unpkg.com/jspsych@8.2.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.1.0"></script>
+    <link href="https://unpkg.com/jspsych@8.2.0/css/jspsych.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-survey-number@1.0.0"></script>
+    <script src="./plugin-cannon/src/index.js"></script>
+  </head>
+  <body></body>
+  <style></style>
+  <script>
+    /* initialize jsPsych */
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        jsPsych.data.displayData();
+      }
+    });
+
+    /* create timeline */
+    var timeline = [];
+
+    /* welcome message */
+    var welcome = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "Thank you for participating in our experiment! Press the spacebar key to begin."
+    };
+    timeline.push(welcome);
+
+    /* present instructions */
+    var instructions = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `You are controlling a cannon and attempting to hit the target.<br> 
+        Your job is to hold down the spacebar to pull back the trigger. <br>
+        The longer you hold the spacebar, the more strength there will be in your shot. 
+        Release the spacebar to fire the cannon. <br> You will have 10 practice trials.`,
+      post_trial_gap: 300
+    };
+    timeline.push(instructions);
+
+    /* test trial */
+    var test = {
+      type: jsPsychPluginCannon,
+      wind_level: jsPsych.timelineVariable('wind_level'),
+      post_trial_gap: 0,
+    };
+
+    /*SVG for the rating screen */
+    var rating_obj = `
+      <svg height="200" width="600">
+        <g transform="translate(50 0)">
+          <g transform="translate(30 50) scale(1 1)">
+            <text x="0" y="0" fill="black" font-size="30">1</text>
+            <text x="100" y="0" fill="black" font-size="30">2</text>
+            <text x="200" y="0" fill="black" font-size="30">3</text>
+            <text x="300" y="0" fill="black" font-size="30">4</text>
+            <text x="400" y="0" fill="black" font-size="30">5</text>
+          </g>
+          <g transform="translate(-60 60) scale(1 1)">
+            <line x1="100" y1="50" x2="500" y2="50" style="stroke:black;stroke-width:2" />
+            <line x1="100" y1="1" x2="100" y2="50" style="stroke:black;stroke-width:2" />
+            <line x1="200" y1="1" x2="200" y2="50" style="stroke:black;stroke-width:2" />
+            <line x1="300" y1="1" x2="300" y2="50" style="stroke:black;stroke-width:2" />
+            <line x1="400" y1="1" x2="400" y2="50" style="stroke:black;stroke-width:2" />
+            <line x1="500" y1="1" x2="500" y2="50" style="stroke:black;stroke-width:2" />
+          </g>
+          <g transform="translate(30 150) scale(1 1)">
+            <text x="-20" y="0" fill="black" font-size="20">No control at all</text>
+            <text x="300" y="0" fill="black" font-size="20">Perfect control</text>
+          </g>
+        </g>
+    </svg>`
+
+    /* Rating trial */
+    var rating = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "Please rate how strong you think the wind was.",
+      prompt: rating_obj,
+      choices: ['1', '2', '3', '4', '5'],
+      data: {
+        task: 'rating'
+      },
+      post_trial_gap: 100,
+    }
+
+    /* Generate an array of 60 wind levels: 20 0s, and 10 of 2, -2, 5, and -5 */
+    function generate_wind() {
+      var trial = 0;
+      var conds = [0, 2, -2, 5, -5];
+      var count = [-10,0,0,0,0];
+      var array = [];
+      while (trial < 60) {
+        var rand = Math.floor(Math.random() * 5); //Generate index 0 through 4
+        if (count[rand] < 10) {
+          array.push(conds[rand]);
+          trial += 1;
+          count[rand] += 1;
+        }
+      }
+      return array;
+    }
+    var wind_array = generate_wind();
+
+    /* Create stimuli arrays for practice & experimental trials */
+    var test_stimuli = [];
+    var practice_stimuli = [];
+    for (let i = 0; i < 10; i++) {
+      practice_stimuli.push({wind_level: 0})
+    }
+    for (let i = 0; i < 60; i++) {
+      test_stimuli.push({wind_level: wind_array[i]})
+    }
+
+    /* Create practice trial procedure */
+    var practice = {
+      timeline: [test],
+      timeline_variables: practice_stimuli,
+    }
+    timeline.push(practice);
+
+    /* Post-practice instructions screen */
+    var begin = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `You are controlling a cannon and attempting to hit the target. <br>
+        Your job is to hold down the spacebar to pull back the trigger. <br>The longer you hold the spacebar, 
+        the more strength there will be in your shot. Release the spacebar to fire the cannon. <br><br>
+        Be careful! Sometimes there might be wind that impacts your shot. After each trial, 
+        you will be asked how much wind you thought there was.<br> You will have 60 trials.<br><br>
+        Press 'q' to begin`,
+      choices: ['q'],
+      post_trial_gap: 100
+    };
+    timeline.push(begin);
+
+    /* Create experimental trial procedure */
+    var test_procedure = {
+      timeline: [test, rating],
+      timeline_variables: test_stimuli,
+    };
+    timeline.push(test_procedure);
+
+    /* Conclusion screen & get data */
+    var conclusion = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "Press any key to exit",
+      on_finish: function () {
+        jsPsych.data.get().localSave('json', 'mydata.json')
+      }
+    }
+    timeline.push(conclusion);
+
+    /* Begin experiment */
+    jsPsych.run(timeline);
+
+  </script>
+</html>
