@@ -158,7 +158,7 @@ var jsPsychPluginCannon = (function (jspsych) {
       //Phase 2 loop: Fires the cannonball at the target, adjusting for wind, and ending the loop when the cannonball hits the ground
       var fire = () => {
         //Calculate & display the ammo's new position:
-        ammo_x += 100 * (draw_x + bias)/100;
+        ammo_x += (draw_x + bias);
         ammo_y += 2000 * gravity * round;
         round += 1;
         display_element.querySelector('#ammo').setAttribute("transform", "matrix(0.3903224882 0 0 0.3903224882 " + ammo_x + " " + ammo_y + ")");
