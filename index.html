@@ -110,7 +110,7 @@
     /* Post-practice instructions screen */
     var begin = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: `You are controlling a cannon and attempting to hit the target. <br>Your job is to hold down the spacebar to pull back the trigger. <br>The longer you hold the spacebar, the more strength there will be in your shot. Release the spacebar to fire the cannon. <br><br>Be careful! Sometimes there might be wind that impacts your shot. After each trial, you will be asked how much wind you thought there was.<br> You will have 60 trials.<br><br>Press 'q' to begin`,
+      stimulus: `You are controlling a cannon and attempting to hit the target. <br>Your job is to hold down the spacebar to pull back the trigger. <br>The longer you hold the spacebar, the more strength there will be in your shot. Release the spacebar to fire the cannon. <br><br>Be careful! <b>Sometimes there might be wind that impacts your shot.</b> After each trial, you will be asked how much wind you thought there was.<br> You will have 60 trials.<br><br>Press 'q' to begin`,
       choices: ['q'],
       post_trial_gap: 100
     };
@@ -127,9 +127,6 @@
     var conclusion = {
       type: jsPsychHtmlKeyboardResponse,
       stimulus: "Press any key to exit",
-      on_finish: function () {
-        jsPsych.data.get().localSave('csv', 'mydata.csv')
-      }
     }
     timeline.push(conclusion);
 
