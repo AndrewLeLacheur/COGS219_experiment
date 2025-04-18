@@ -8,15 +8,27 @@
     <link href="https://unpkg.com/jspsych@8.2.0/css/jspsych.css" rel="stylesheet" type="text/css" />
     <script src="https://unpkg.com/@jspsych-contrib/plugin-survey-number@1.0.0"></script>
     <script src="./plugin-cannon/src/index.js"></script>
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
   </head>
   <body></body>
   <style></style>
   <script>
     /* initialize jsPsych */
     var jsPsych = initJsPsych({
-      on_finish: function() {
-        jsPsych.data.displayData();
+      on_finish: function(){
+        //window.location = "https://app.prolific.co/submissions/complete?cc=XXXXXXX"   TODO: correct link
       }
+    });
+
+    /* capture info from Prolific */
+    var subject_id_prolific = jsPsych.data.getURLVariable('PROLIFIC_PID');
+    var study_id = jsPsych.data.getURLVariable('STUDY_ID');
+    var session_id = jsPsych.data.getURLVariable('SESSION_ID');
+
+    jsPsych.data.addProperties({
+      subject_id_prolific: subject_id_prolific,
+      study_id: study_id,
+      session_id: session_id
     });
 
     /* create timeline */
@@ -32,10 +44,7 @@
     /* present instructions */
     var instructions = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: `You are controlling a cannon and attempting to hit the target.<br> 
-        Your job is to hold down the spacebar to pull back the trigger. <br>
-        The longer you hold the spacebar, the more strength there will be in your shot. 
-        Release the spacebar to fire the cannon. <br> You will have 10 practice trials.`,
+      stimulus: `You are controlling a cannon and attempting to hit the target.<br> Your job is to hold down the spacebar to pull back the trigger. <br>The longer you hold the spacebar, the more strength there will be in your shot. Release the spacebar to fire the cannon. <br> You will have 10 practice trials. <br> Press the spacebar to continue.`,
       post_trial_gap: 300
     };
     timeline.push(instructions);
@@ -49,29 +58,7 @@
 
     /*SVG for the rating screen */
     var rating_obj = `
-      <svg height="200" width="600">
-        <g transform="translate(50 0)">
-          <g transform="translate(30 50) scale(1 1)">
-            <text x="0" y="0" fill="black" font-size="30">1</text>
-            <text x="100" y="0" fill="black" font-size="30">2</text>
-            <text x="200" y="0" fill="black" font-size="30">3</text>
-            <text x="300" y="0" fill="black" font-size="30">4</text>
-            <text x="400" y="0" fill="black" font-size="30">5</text>
-          </g>
-          <g transform="translate(-60 60) scale(1 1)">
-            <line x1="100" y1="50" x2="500" y2="50" style="stroke:black;stroke-width:2" />
-            <line x1="100" y1="1" x2="100" y2="50" style="stroke:black;stroke-width:2" />
-            <line x1="200" y1="1" x2="200" y2="50" style="stroke:black;stroke-width:2" />
-            <line x1="300" y1="1" x2="300" y2="50" style="stroke:black;stroke-width:2" />
-            <line x1="400" y1="1" x2="400" y2="50" style="stroke:black;stroke-width:2" />
-            <line x1="500" y1="1" x2="500" y2="50" style="stroke:black;stroke-width:2" />
-          </g>
-          <g transform="translate(30 150) scale(1 1)">
-            <text x="-20" y="0" fill="black" font-size="20">No control at all</text>
-            <text x="300" y="0" fill="black" font-size="20">Perfect control</text>
-          </g>
-        </g>
-    </svg>`
+      <svg height="200" width="600"><g transform="translate(50 0)"><g transform="translate(30 50) scale(1 1)"><text x="0" y="0" fill="black" font-size="30">1</text><text x="100" y="0" fill="black" font-size="30">2</text><text x="200" y="0" fill="black" font-size="30">3</text><text x="300" y="0" fill="black" font-size="30">4</text><text x="400" y="0" fill="black" font-size="30">5</text></g><g transform="translate(-60 60) scale(1 1)"><line x1="100" y1="50" x2="500" y2="50" style="stroke:black;stroke-width:2" /><line x1="100" y1="1" x2="100" y2="50" style="stroke:black;stroke-width:2" /><line x1="200" y1="1" x2="200" y2="50" style="stroke:black;stroke-width:2" /><line x1="300" y1="1" x2="300" y2="50" style="stroke:black;stroke-width:2" /><line x1="400" y1="1" x2="400" y2="50" style="stroke:black;stroke-width:2" /><line x1="500" y1="1" x2="500" y2="50" style="stroke:black;stroke-width:2" /></g><g transform="translate(30 150) scale(1 1)"><text x="-20" y="0" fill="black" font-size="20">No wind at all</text><text x="300" y="0" fill="black" font-size="20">Very high wind</text></g></g></svg>`
 
     /* Rating trial */
     var rating = {
@@ -123,12 +110,7 @@
     /* Post-practice instructions screen */
     var begin = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: `You are controlling a cannon and attempting to hit the target. <br>
-        Your job is to hold down the spacebar to pull back the trigger. <br>The longer you hold the spacebar, 
-        the more strength there will be in your shot. Release the spacebar to fire the cannon. <br><br>
-        Be careful! Sometimes there might be wind that impacts your shot. After each trial, 
-        you will be asked how much wind you thought there was.<br> You will have 60 trials.<br><br>
-        Press 'q' to begin`,
+      stimulus: `You are controlling a cannon and attempting to hit the target. <br>Your job is to hold down the spacebar to pull back the trigger. <br>The longer you hold the spacebar, the more strength there will be in your shot. Release the spacebar to fire the cannon. <br><br>Be careful! Sometimes there might be wind that impacts your shot. After each trial, you will be asked how much wind you thought there was.<br> You will have 60 trials.<br><br>Press 'q' to begin`,
       choices: ['q'],
       post_trial_gap: 100
     };
@@ -146,10 +128,23 @@
       type: jsPsychHtmlKeyboardResponse,
       stimulus: "Press any key to exit",
       on_finish: function () {
-        jsPsych.data.get().localSave('json', 'mydata.json')
+        jsPsych.data.get().localSave('csv', 'mydata.csv')
       }
     }
     timeline.push(conclusion);
+
+    /* data pipe set up */
+    const subject_id = jsPsych.randomization.randomID(10);
+    const filename = `${subject_id}.csv`;
+
+    const save_data = {
+      type: jsPsychPipe,
+      action: "save",
+      experiment_id: "mb2NdCcFB9ID",
+      filename: filename,
+      data_string: ()=>jsPsych.data.get().csv()
+    };
+    timeline.push(save_data);
 
     /* Begin experiment */
     jsPsych.run(timeline);

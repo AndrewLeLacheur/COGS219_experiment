@@ -54,49 +54,7 @@ var jsPsychPluginCannon = (function (jspsych) {
     trial(display_element, trial) {
 
       //Scene SVG object:
-      var scene = `
-        <div id="game-container" style="width: 50vw; height: 100vh; margin: auto; margin-top: 0">
-        <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-        <svg ID="game" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="640" height="640" viewBox="0 0 640 640" xml:space="preserve">
-        <desc>Created with Fabric.js 5.3.0</desc>
-        <defs>
-        </defs>
-        <g ID="ammo" transform="matrix(0.3903224882 0 0 0.3903224882 85.3247211391 270.4361710204)" id="Elu-Zgd9sXlolDpDnAIIW"  >
-        <path style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -26.88172 C 14.83871 -26.88172 26.88172 -14.83871 26.88172 0 C 26.88172 14.83871 14.83871 26.88172 0 26.88172 C -14.83871 26.88172 -26.88172 14.83871 -26.88172 0 C -26.88172 -14.83871 -14.83871 -26.88172 0 -26.88172 z" stroke-linecap="round" />
-        </g>
-        <g ID="drawer" transform="matrix(0.8012969277 0 0 0.8012969277 68.1614710941 270.8168763062)" id="rMp_zXUpz6RGXZTRjyP0S"  >
-        <path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(84,47,13); fill-rule: nonzero; opacity: 1;"  transform=" translate(0.000005, 0)" d="M -13.08816 -6.21359 L -34.01379 -6.21359 L -34.01379 6.21359 L 34.01378 6.21359 L 34.01378 -6.21359 z" stroke-linecap="round" />
-        </g>
-        <g transform="matrix(0.8012969277 0 0 0.8012969277 98.5486336153 270.8168763062)" id="EYXG3mo6chn3JEPdg-9kD"  >
-        <path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(78,78,78); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0.00000405)" d="M -28.92098 -20.73058 C -25.98261 -21.79908 -22.85541 -22.2499 -19.73489 -22.05487 L 50.09709 -17.69037 L 50.09709 10.54749 L -16.297069999999998 21.74107 L -16.297069999999998 21.74107 C -21.608759999999997 22.636580000000002 -27.067549999999997 21.84237 -31.90385 19.4704 L -50.097089999999994 10.547490000000002 L -50.097089999999994 -13.03018 z" stroke-linecap="round" />
-        </g>
-        <g transform="matrix(1 0 0 1 318.4466019417 458.9932331313)" id="dW1TFzicQlEj5Mxw7_YOq"  >
-        <path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(78,78,78); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M -321.16505 -158.09561 L -172.81554 -158.59561 L -172.81554 -24.04177999999999 L -11.262139999999988 5.472780000000011 L 91.26213000000001 -1.1594199999999892 L 254.36893 -27.14857999999999 L 321.16505 -52.23070999999999 L 321.16505 158.59560000000002 L -318.05825 158.59560000000002 z" stroke-linecap="round" />
-        </g>
-        <g transform="matrix(0.8012969277 0 0 0.8012969277 85.3247211391 290.4131687281)" id="zft9FQ4qqUeMRjAlZu1hs"  >
-        <path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(218,182,149); fill-rule: nonzero; opacity: 1;"  transform=" translate(0.000005, 0.0000036709)" d="M -25.24272 11.33638 L -16.236079999999998 -3.513209999999999 L -16.236079999999998 -3.513209999999999 C -15.024259999999998 -5.5111799999999995 -13.195649999999997 -7.06096 -11.026029999999999 -7.9288099999999995 L -5.264359999999999 -10.23348 L -5.264359999999999 -10.23348 C -1.1747999999999994 -11.8693 3.41908 -11.67822 7.358660000000001 -9.70843 L 9.826270000000001 -8.47462 L 9.826270000000001 -8.47462 C 12.29216 -7.24168 14.384240000000002 -5.37287 15.886500000000002 -3.06116 L 25.242710000000002 11.336379999999998 z" stroke-linecap="round" />
-        </g>
-        <g ID="target" transform="matrix(0.5765117211 0.5567308976 -0.6946583705 0.7193398003 592.8246125224 417.2550669429)" id="9P9nXKqjBnmBxhjFm1LeO"  >
-        <g style=""   >
-            <g transform="matrix(0.6799829811 0 0 0.6799829811 0 0)" id="9pw98K4-XjN5t2AH_nlwL"  >
-        <path style="stroke: rgb(99,196,13); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(244,5,5); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -38.83495 C 21.43689 -38.83495 38.83495 -21.43689 38.83495 0 C 38.83495 21.43689 21.43689 38.83495 0 38.83495 C -21.43689 38.83495 -38.83495 21.43689 -38.83495 0 C -38.83495 -21.43689 -21.43689 -38.83495 0 -38.83495 z" stroke-linecap="round" />
-        </g>
-            <g transform="matrix(0.4600936268 0 0 0.4600936268 0 0)" id="lMnOK53gygM4t0YAD1rJk"  >
-        <path style="stroke: rgb(99,196,13); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -38.83495 C 21.43689 -38.83495 38.83495 -21.43689 38.83495 0 C 38.83495 21.43689 21.43689 38.83495 0 38.83495 C -21.43689 38.83495 -38.83495 21.43689 -38.83495 0 C -38.83495 -21.43689 -21.43689 -38.83495 0 -38.83495 z" stroke-linecap="round" />
-        </g>
-            <g transform="matrix(0.2926533642 0 0 0.2926533642 0 -0.2344281116)" id="-nFS430BffX49I3W4oer6"  >
-        <path style="stroke: rgb(99,196,13); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(244,5,5); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -38.83495 C 21.43689 -38.83495 38.83495 -21.43689 38.83495 0 C 38.83495 21.43689 21.43689 38.83495 0 38.83495 C -21.43689 38.83495 -38.83495 21.43689 -38.83495 0 C -38.83495 -21.43689 -21.43689 -38.83495 0 -38.83495 z" stroke-linecap="round" />
-        </g>
-        </g>
-        </g>
-        <g ID="result">
-        <rect ID="resultbox" width="200" height="100" x="230" y="300" fill="grey" />
-        <text ID="resulttext" x="250" y="355" fill="black">TESTING</text>
-        </g>
-        </svg>
-        </div>
-        `
+      var scene = `<div id="game-container" style="width: 50vw; height: 100vh; margin: auto; margin-top: 0"><?xml version="1.0" encoding="UTF-8" standalone="no" ?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg ID="game" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="640" height="640" viewBox="0 0 640 640" xml:space="preserve"><desc>Created with Fabric.js 5.3.0</desc><defs></defs><g ID="ammo" transform="matrix(0.3903224882 0 0 0.3903224882 85.3247211391 270.4361710204)" id="Elu-Zgd9sXlolDpDnAIIW"  ><path style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -26.88172 C 14.83871 -26.88172 26.88172 -14.83871 26.88172 0 C 26.88172 14.83871 14.83871 26.88172 0 26.88172 C -14.83871 26.88172 -26.88172 14.83871 -26.88172 0 C -26.88172 -14.83871 -14.83871 -26.88172 0 -26.88172 z" stroke-linecap="round" /></g><g ID="drawer" transform="matrix(0.8012969277 0 0 0.8012969277 68.1614710941 270.8168763062)" id="rMp_zXUpz6RGXZTRjyP0S"  ><path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(84,47,13); fill-rule: nonzero; opacity: 1;"  transform=" translate(0.000005, 0)" d="M -13.08816 -6.21359 L -34.01379 -6.21359 L -34.01379 6.21359 L 34.01378 6.21359 L 34.01378 -6.21359 z" stroke-linecap="round" /></g><g transform="matrix(0.8012969277 0 0 0.8012969277 98.5486336153 270.8168763062)" id="EYXG3mo6chn3JEPdg-9kD"  ><path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(78,78,78); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0.00000405)" d="M -28.92098 -20.73058 C -25.98261 -21.79908 -22.85541 -22.2499 -19.73489 -22.05487 L 50.09709 -17.69037 L 50.09709 10.54749 L -16.297069999999998 21.74107 L -16.297069999999998 21.74107 C -21.608759999999997 22.636580000000002 -27.067549999999997 21.84237 -31.90385 19.4704 L -50.097089999999994 10.547490000000002 L -50.097089999999994 -13.03018 z" stroke-linecap="round" /></g><g transform="matrix(1 0 0 1 318.4466019417 458.9932331313)" id="dW1TFzicQlEj5Mxw7_YOq"  ><path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(78,78,78); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M -321.16505 -158.09561 L -172.81554 -158.59561 L -172.81554 -24.04177999999999 L -11.262139999999988 5.472780000000011 L 91.26213000000001 -1.1594199999999892 L 254.36893 -27.14857999999999 L 321.16505 -52.23070999999999 L 321.16505 158.59560000000002 L -318.05825 158.59560000000002 z" stroke-linecap="round" /></g><g transform="matrix(0.8012969277 0 0 0.8012969277 85.3247211391 290.4131687281)" id="zft9FQ4qqUeMRjAlZu1hs"  ><path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(218,182,149); fill-rule: nonzero; opacity: 1;"  transform=" translate(0.000005, 0.0000036709)" d="M -25.24272 11.33638 L -16.236079999999998 -3.513209999999999 L -16.236079999999998 -3.513209999999999 C -15.024259999999998 -5.5111799999999995 -13.195649999999997 -7.06096 -11.026029999999999 -7.9288099999999995 L -5.264359999999999 -10.23348 L -5.264359999999999 -10.23348 C -1.1747999999999994 -11.8693 3.41908 -11.67822 7.358660000000001 -9.70843 L 9.826270000000001 -8.47462 L 9.826270000000001 -8.47462 C 12.29216 -7.24168 14.384240000000002 -5.37287 15.886500000000002 -3.06116 L 25.242710000000002 11.336379999999998 z" stroke-linecap="round" /></g><g ID="target" transform="matrix(0.5765117211 0.5567308976 -0.6946583705 0.7193398003 592.8246125224 417.2550669429)" id="9P9nXKqjBnmBxhjFm1LeO"  ><g style=""   ><g transform="matrix(0.6799829811 0 0 0.6799829811 0 0)" id="9pw98K4-XjN5t2AH_nlwL"  ><path style="stroke: rgb(99,196,13); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(244,5,5); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -38.83495 C 21.43689 -38.83495 38.83495 -21.43689 38.83495 0 C 38.83495 21.43689 21.43689 38.83495 0 38.83495 C -21.43689 38.83495 -38.83495 21.43689 -38.83495 0 C -38.83495 -21.43689 -21.43689 -38.83495 0 -38.83495 z" stroke-linecap="round" /></g><g transform="matrix(0.4600936268 0 0 0.4600936268 0 0)" id="lMnOK53gygM4t0YAD1rJk"  ><path style="stroke: rgb(99,196,13); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -38.83495 C 21.43689 -38.83495 38.83495 -21.43689 38.83495 0 C 38.83495 21.43689 21.43689 38.83495 0 38.83495 C -21.43689 38.83495 -38.83495 21.43689 -38.83495 0 C -38.83495 -21.43689 -21.43689 -38.83495 0 -38.83495 z" stroke-linecap="round" /></g><g transform="matrix(0.2926533642 0 0 0.2926533642 0 -0.2344281116)" id="-nFS430BffX49I3W4oer6"  ><path style="stroke: rgb(99,196,13); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(244,5,5); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 0 -38.83495 C 21.43689 -38.83495 38.83495 -21.43689 38.83495 0 C 38.83495 21.43689 21.43689 38.83495 0 38.83495 C -21.43689 38.83495 -38.83495 21.43689 -38.83495 0 C -38.83495 -21.43689 -21.43689 -38.83495 0 -38.83495 z" stroke-linecap="round" /></g></g></g><g ID="result"><rect ID="resultbox" width="290" height="100" x="230" y="300" fill="grey" /><text ID="resulttext" x="260" y="355" fill="black">TESTING</text></g></svg></div>`
 
       //Global variables: 
       var draw_x = 0; 
@@ -126,9 +84,7 @@ var jsPsychPluginCannon = (function (jspsych) {
       var setup = function () {
         //Build html:
     
-        var layout = `<section>
-            <section ID="scene"></section>
-        </section>`
+        var layout = `<section><section ID="scene"></section></section>`
     
         display_element.innerHTML = layout;
         display_element.querySelector("#scene").innerHTML = scene;
@@ -174,6 +130,10 @@ var jsPsychPluginCannon = (function (jspsych) {
 
             //Calculate the optimal drawback for the target's position:
             let target_drawback = (target_x / 54.25) - (3 / target_x) - 0.25;
+            // 442 => 7.89
+            // 492 => 8.81
+            // 542 => 9.73
+            // 592 => 10.65
 
             //Set wind strength & direction, depending on trial condition and whether the player has over or under shot:
             if (draw_x > target_drawback) {
@@ -217,13 +177,14 @@ var jsPsychPluginCannon = (function (jspsych) {
           //Display results:
           display_element.querySelector('#result').style.visibility = "visible";
           let feet = Math.floor(actual_dif / 10);
-          display_element.querySelector('#resulttext').innerHTML = feet +  " feet from target";
-          if (actual_dif < 20) {
+          if (actual_dif < 50) {
             display_element.querySelector('#resultbox').setAttribute("fill", "green");
-          } else if (actual_dif < 50) {
-            display_element.querySelector('#resultbox').setAttribute("fill", "yellow");
+            display_element.querySelector('#resulttext').innerHTML = "Success! " + feet +  " feet from target";
+          //} else if (actual_dif < 80) {
+          //  display_element.querySelector('#resultbox').setAttribute("fill", "yellow");
           } else {
             display_element.querySelector('#resultbox').setAttribute("fill", "red");
+            display_element.querySelector('#resulttext').innerHTML = "Failure. " + feet +  " feet from target";
           }
 
           //Set the event listener that will end the trial:
